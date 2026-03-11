@@ -74,6 +74,6 @@ Overall, the descriptive statistics highlight substantial heterogeneity across c
 | Total Population | 5373 | 392,414,999 | 1,402,894,242 | 9,544 | 2,392,978 | 8,472,313 | 27,154,515 | 1.425e9 |
 | Manufacturing Share | 4810 | 0.126 | 0.064 | 0.003 | 0.079 | 0.123 | 0.167 | 0.450 |
 | Trade Openness | 4739 | 0.850 | 0.530 | 0.100 | 0.515 | 0.731 | 1.025 | 1.426 |
-| Paper Consumption per Capita (kg) | 5373 | 14.40 | 26.72 | 0 | 0.79 | 4.29 | 14.96 | 782.93 |
+| Paper Consumption per Capita | 5373 | 14.40 | 26.72 | 0 | 0.79 | 4.29 | 14.96 | 782.93 |
 
 ---
