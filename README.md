@@ -3,6 +3,12 @@ Group Member: Mingqian Gao, Yuxin Zhao, and Chieh Su
 
 ## 1. Introduction
 
+Over the past few decades, rapid advances in digital technology have transformed how information is produced, stored, and transmitted. The widespread adoption of the internet, electronic documents, and online communication has led many observers to predict the emergence of a “paperless society.” Under this hypothesis, increasing digitalization may reduce the demand for traditional printing and writing paper.
+
+However, the relationship between digitalization and paper consumption is complex. While electronic communication may substitute for printed materials, economic development and expanding commercial activities may also increase the demand for paper products. As a result, it is not immediately clear whether digitalization actually reduces paper consumption across countries.
+
+In this project, we examine whether economic and digital development indicators can predict cross-country differences in printing and writing paper consumption. Using country-level panel data from the Food and Agriculture Organization and the World Bank, we analyze how variables such as GDP, internet adoption, urbanization, and industrial structure are associated with printing and writing paper consumption. We compare several predictive models to evaluate which factors best explain variation in paper demand.
+
 ## 2. Data
 
 ### 2.1 Data Sources
