@@ -56,8 +56,6 @@ plt.title("Feature Correlation Matrix")
 plt.savefig(OUT / "correlation_heatmap.png", dpi=300)
 plt.show()
 
-missing = df[vars].isnull().sum()
 
-summary.to_csv(OUT / "summary_statistics.csv")
 
 
