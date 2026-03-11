@@ -370,6 +370,9 @@ for df in all_dfs:
     df["countryname"] = df["countryname"].astype(str).str.strip()
     df["year"] = pd.to_numeric(df["year"], errors="coerce")
 
+manushare["Manushare"] = manushare["Manushare"] / 100
+trade["trade"] = trade["trade"] / 100
+
 # ------------------------------#
 # 2.3 Year filter
 # ------------------------------#
@@ -398,4 +401,5 @@ final_panel = final_panel.drop(columns=["countrycode", "countrycode_x", "country
 
 
 final_panel = final_panel.dropna(subset=["GDPperCapita", "paper_writing", "internetUsers"])
+
 final_panel.to_csv(ROOT / "final_panel.csv", index=False)
