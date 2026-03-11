@@ -32,11 +32,4 @@ summary = df[vars].describe().T
 
 missing = df[vars].isnull().sum()
 
-print("Summary statistics:")
-print(summary)
-
-print("\nMissing values:")
-print(missing)
-
 summary.to_csv(OUT / "summary_statistics.csv")
-missing.to_csv(OUT / "missing_values.csv")
