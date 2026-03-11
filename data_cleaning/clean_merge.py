@@ -8,6 +8,7 @@ CODE = Path(__file__).resolve().parent
 ROOT = CODE.parent
 RAW = ROOT / "raw"
 INT = ROOT / "intermediate"
+OUT = ROOT / "output"
 
 # ------------------------------#
 # 1. clean data
@@ -404,5 +405,6 @@ final_panel = final_panel.drop(columns=["countrycode", "countrycode_x", "country
 
 final_panel = final_panel.dropna(subset=["GDPperCapita", "paper_writing", "internetUsers"])
 
-final_panel.to_csv(ROOT / "final_panel.csv", index=False)
+final_panel.to_csv("final_panel.csv", index=False)
+
 
