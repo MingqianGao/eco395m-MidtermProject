@@ -7,7 +7,6 @@ import pandas as pd
 CODE = Path(__file__).resolve().parent
 ROOT = CODE.parent
 RAW = ROOT / "raw"
-OUT = ROOT / "output"
 INT = ROOT / "intermediate"
 
 # ------------------------------#
@@ -399,4 +398,5 @@ final_panel = final_panel.drop(columns=["countrycode", "countrycode_x", "country
 
 
 final_panel = final_panel.dropna(subset=["GDPperCapita", "paper_writing", "internetUsers"])
-final_panel.to_excel(OUT / "final_panel.xlsx", index=False)
+
+final_panel.to_excel(ROOT / "final_panel.xlsx", index=False)
