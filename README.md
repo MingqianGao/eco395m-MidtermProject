@@ -70,3 +70,17 @@ Variables such as GDP per capita, internet penetration, and trade openness displ
 | Paper Consumption per Capita | 5373 | 14.40 | 26.72 | 0 | 0.79 | 4.29 | 14.96 | 782.93 |
 
 ---
+
+### 2.4 Correlation Analysis
+
+To explore the relationships among the main variables, Figure 1 presents the correlation matrix of key variables in the dataset. The heatmap visualizes pairwise Pearson correlation coefficients, with warmer colors indicating stronger positive correlations and cooler colors indicating negative correlations.
+
+Several patterns emerge from the figure. First, total paper consumption and writing paper consumption are highly correlated, reflecting that writing and printing paper represents a large share of overall paper usage. Second, urban population and total population exhibit a strong positive correlation, which is expected since more populous countries tend to have larger urban populations.
+
+In terms of economic development, GDP per capita is positively correlated with internet penetration and paper consumption per capita, suggesting that more developed economies tend to have higher levels of digital adoption as well as higher consumption of paper products.
+
+Interestingly, trade openness shows a weak negative correlation with paper consumption variables, while manufacturing share displays only modest correlations with most variables. Overall, the correlation patterns suggest that economic development, urbanization, and digital adoption may play an important role in shaping paper consumption patterns across countries.
+
+![Correlation Matrix](output/correlation_heatmap.png)
+
+**Figure 1. Correlation matrix of key variables.**
