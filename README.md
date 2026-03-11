@@ -81,6 +81,7 @@ In terms of economic development, GDP per capita is positively correlated with i
 
 Interestingly, trade openness shows a weak negative correlation with paper consumption variables, while manufacturing share displays only modest correlations with most variables. Overall, the correlation patterns suggest that economic development, urbanization, and digital adoption may play an important role in shaping paper consumption patterns across countries.
 
-![Correlation Matrix](output/correlation_heatmap.png)
-
-**Figure 1. Correlation matrix of key variables.**
+<p align="center">
+<img src="output/correlation_heatmap.png" width="700"><br>
+<b>Figure 1. Correlation matrix of key variables.</b>
+</p>
