@@ -44,20 +44,13 @@ Several variables are transformed or standardized to ensure comparability across
 
 ### 2.3 Descriptive Statistics
 
-Table 1 reports summary statistics for the main variables used in the analysis.  
+Table 2 reports summary statistics for the main variables used in the analysis.  
 The final panel dataset contains **5,373 country–year observations** covering multiple countries over time.
 
-The key outcome variable is **writing and printing paper consumption per capita**, which averages **14.4 kilograms per person** with a median of **4.29 kilograms**. The distribution is highly right-skewed: while most observations fall below 15 kilograms per capita, the maximum value reaches **782.9 kilograms**, indicating the presence of extreme observations.
+Paper consumption per capita exhibits a highly right-skewed distribution, with most observations concentrated at relatively low levels but a small number of extreme values.
 
-Economic development varies substantially across countries in the sample. **GDP per capita** averages approximately **13,160 USD**, ranging from about **170 USD** to over **167,000 USD**. The **GDP growth rate** averages **3.54 percent**, with considerable volatility across country–year observations.
-
-Digital technology adoption also differs widely across countries. On average, **31.8 percent of the population uses the internet**, although this ranges from **0 percent to full penetration** in some countries.
-
-Urbanization and population size vary significantly as well. The **average urban population** in the dataset is roughly **20 million people**, while total population averages around **392 million**.
-
-Finally, the dataset includes measures of economic structure and openness. The **manufacturing share of GDP** averages **12.6 percent**, while **trade openness (trade as a share of GDP)** averages **0.85**, with some small open economies exceeding a ratio of 1.
-
-Overall, the descriptive statistics highlight substantial heterogeneity across countries in terms of economic development, digital adoption, and paper consumption patterns. The strong right skew in paper consumption suggests that extreme observations may influence the distribution, which is taken into account in subsequent analysis.
+The statistics also indicate substantial heterogeneity in economic development, technological adoption, and economic structure across the sample. 
+Variables such as GDP per capita, internet penetration, and trade openness display wide variation, reflecting differences in development levels and economic characteristics across countries and over time.
 
 ---
 
