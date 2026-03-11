@@ -399,4 +399,5 @@ final_panel = final_panel.drop(columns=["countrycode", "countrycode_x", "country
 
 final_panel = final_panel.dropna(subset=["GDPperCapita", "paper_writing", "internetUsers"])
 
-final_panel.to_excel(ROOT / "final_panel.xlsx", index=False)
+final_panel.to_csv(ROOT / "final_panel.csv", index=False)
+
