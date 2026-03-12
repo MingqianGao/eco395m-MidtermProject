@@ -13,101 +13,58 @@ INT = ROOT / "intermediate"
 # 1. clean data
 # ------------------------------#
 
+def clean_world_bank_data(input_path, output_path, value_name): 
+    """
+    Clean a standard World Bank file and save it in long format.
+    """
+
+    df = pd.read_csv(input_path)
+    df = df.drop(columns=["Country Code", "Indicator Name", "Indicator Code"], errors="ignore")
+    df = df.rename(columns={"Country Name": "countryname"})
+    
+    year_cols = [col for col in df.columns if str(col).isdigit()]
+    df = df.rename(columns={col: f"y{col}" for col in year_cols})
+    
+    df = df.melt(id_vars=["countryname"], var_name="year", value_name=value_name)
+    df["year"] = df["year"].str.replace("y", "", regex=False).astype(int)
+    
+    df.to_csv(output_path, index=False)
+
 # ------------------------------#
 # clean GDPperCapita
 # ------------------------------#
 
-df = pd.read_csv(RAW / "GDP per capita (constant 2015USD).csv")
-df = df.drop(columns=["Country Code", "Indicator Name", "Indicator Code"], errors="ignore")
-df = df.rename(columns={"Country Name": "countryname"})
-
-year_cols = [col for col in df.columns if str(col).isdigit()]
-df = df.rename(columns={col: f"y{col}" for col in year_cols})
-
-df = df.melt(id_vars=["countryname"], var_name="year", value_name="GDPperCapita")
-df["year"] = df["year"].str.replace("y", "", regex=False).astype(int)
-
-df.to_csv(INT / "gdp.csv", index=False)
+clean_world_bank_data(RAW / "GDP per capita (constant 2015USD).csv", INT / "gdp.csv", "GDPperCapita")
 
 # ------------------------------#
 # clean GDP growth
 # ------------------------------#
 
-df = pd.read_csv(RAW / "GDP growth.csv")
-df = df.drop(columns=["Country Code", "Indicator Name", "Indicator Code"], errors="ignore")
-df = df.rename(columns={"Country Name": "countryname"})
-
-year_cols = [col for col in df.columns if str(col).isdigit()]
-df = df.rename(columns={col: f"y{col}" for col in year_cols})
-
-df = df.melt(id_vars=["countryname"], var_name="year", value_name="GDPgrowth")
-df["year"] = df["year"].str.replace("y", "", regex=False).astype(int)
-
-df.to_csv(INT / "gdp_growth.csv", index=False)
+clean_world_bank_data(RAW / "GDP growth.csv", INT / "gdp_growth.csv", "GDPgrowth")
 
 # ------------------------------#
 # clean Manufacturing share
 # ------------------------------#
 
-df = pd.read_csv(RAW / "Manufacturing share.csv")
-df = df.drop(columns=["Country Code", "Indicator Name", "Indicator Code"], errors="ignore")
-df = df.rename(columns={"Country Name": "countryname"})
-
-year_cols = [col for col in df.columns if str(col).isdigit()]
-df = df.rename(columns={col: f"y{col}" for col in year_cols})
-
-df = df.melt(id_vars=["countryname"], var_name="year", value_name="Manushare")
-df["year"] = df["year"].str.replace("y", "", regex=False).astype(int)
-
-df.to_csv(INT / "Manushare.csv", index=False)
+clean_world_bank_data(RAW / "Manufacturing share.csv", INT / "Manushare.csv", "Manushare")
 
 # ------------------------------#
 # clean trade share
 # ------------------------------#
 
-df = pd.read_csv(RAW / "Trade.csv")
-df = df.drop(columns=["Country Code", "Indicator Name", "Indicator Code"], errors="ignore")
-df = df.rename(columns={"Country Name": "countryname"})
-
-year_cols = [col for col in df.columns if str(col).isdigit()]
-df = df.rename(columns={col: f"y{col}" for col in year_cols})
-
-df = df.melt(id_vars=["countryname"], var_name="year", value_name="trade")
-df["year"] = df["year"].str.replace("y", "", regex=False).astype(int)
-
-df.to_csv(INT / "Trade.csv", index=False)
+clean_world_bank_data(RAW / "Trade.csv", INT / "Trade.csv", "trade")
 
 # ------------------------------#
 # clean secondary school enrollment
 # ------------------------------#
 
-df = pd.read_csv(RAW / "secondary.csv")
-df = df.drop(columns=["Country Code", "Indicator Name", "Indicator Code"], errors="ignore")
-df = df.rename(columns={"Country Name": "countryname"})
-
-year_cols = [col for col in df.columns if str(col).isdigit()]
-df = df.rename(columns={col: f"y{col}" for col in year_cols})
-
-df = df.melt(id_vars=["countryname"], var_name="year", value_name="schoolsec")
-df["year"] = df["year"].str.replace("y", "", regex=False).astype(int)
-
-df.to_csv(INT / "secondary.csv", index=False)
+clean_world_bank_data(RAW / "secondary.csv", INT / "secondary.csv", "schoolsec")
 
 # ------------------------------#
 # clean tertiary school enrollment
 # ------------------------------#
 
-df = pd.read_csv(RAW / "tertiary.csv")
-df = df.drop(columns=["Country Code", "Indicator Name", "Indicator Code"], errors="ignore")
-df = df.rename(columns={"Country Name": "countryname"})
-
-year_cols = [col for col in df.columns if str(col).isdigit()]
-df = df.rename(columns={col: f"y{col}" for col in year_cols})
-
-df = df.melt(id_vars=["countryname"], var_name="year", value_name="schoolter")
-df["year"] = df["year"].str.replace("y", "", regex=False).astype(int)
-
-df.to_csv(INT / "tertiary.csv", index=False)
+clean_world_bank_data(RAW / "tertiary.csv", INT / "tertiary.csv", "schoolter")
 
 # ------------------------------#
 # clean urban population
@@ -238,7 +195,6 @@ df = (
 
 df["countryname"] = df["Area"].replace(name_map)
 
-
 df["paper_writing"] = (
     df["Production"].fillna(0)
     + df["Import quantity"].fillna(0)
@@ -267,7 +223,6 @@ df = (
 )
 
 df["countryname"] = df["Area"].replace(name_map)
-
 
 df["paper_all"] = (
     df["Production"].fillna(0)
@@ -347,7 +302,6 @@ final_panel = final_panel.merge(paper_all, on=["countryname", "year"], how="oute
 final_panel = final_panel.merge(population, on=["countryname", "year"], how="outer")
 
 final_panel = final_panel.drop(columns=["countrycode", "countrycode_x", "countrycode_y"], errors="ignore")
-
 
 final_panel = final_panel.dropna(subset=["GDPperCapita", "paper_writing", "internetUsers"])
 
