@@ -1,0 +1,8 @@
+Feature,Importance
+log_GDPperCapita,0.642839
+log_urbanpop,0.11177522
+Manushare,0.08313323
+year,0.054002386
+internetUsers,0.045957938
+trade,0.042556975
+GDPgrowth,0.01973514
