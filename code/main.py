@@ -27,8 +27,6 @@ DATA = ROOT / "data_cleaning"
 OUT = ROOT / "output"
 
 OUT.mkdir(exist_ok=True)
-(OUT / "tables").mkdir(exist_ok=True)
-(OUT / "figures").mkdir(exist_ok=True)
 
 # ----------------------------------------------------------#
 # Model Evaluation
@@ -251,7 +249,7 @@ def feature_importance(best_model_name, best_model, feature_cols, suffix=""):
     file_name = best_model_name.lower().replace(" ", "_")
 
     fi_df.to_csv(
-        OUT / "tables" / f"feature_importance_{file_name}{suffix}.csv",
+        OUT / f"feature_importance_{file_name}{suffix}.csv",
         index=False
     )
 
@@ -264,7 +262,7 @@ def feature_importance(best_model_name, best_model, feature_cols, suffix=""):
     plt.tight_layout()
 
     plt.savefig(
-        OUT / "figures" / f"feature_importance_{file_name}{suffix}.png"
+        OUT / f"feature_importance_{file_name}{suffix}.png"
     )
 
     plt.close()
@@ -441,3 +439,4 @@ best_model = trained_models[best_model_name]
 
 # feature importance
 feature_importance(best_model_name, best_model, feature_cols, "_without_gdp")
+
