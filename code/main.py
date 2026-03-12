@@ -113,6 +113,13 @@ def evaluate_model(model, model_name):
 # Linear Regression
 # ----------------------------------------------------------#
 
+from sklearn.linear_model import LinearRegression
+
+def run_linear_regression():
+
+    model = LinearRegression()
+
+    return evaluate_model(model, "Linear Regression")
 
 
 
@@ -157,6 +164,7 @@ def run_polynomial_regression():
 # ----------------------------------------------------------#
 # XGBoost
 # ----------------------------------------------------------#
+
 
 
 
