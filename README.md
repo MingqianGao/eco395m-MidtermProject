@@ -146,7 +146,10 @@ The model comparison results with GDP per capita included are saved in: output/m
 
 The visualization of model performance is shown below:
 
-![Model Comparison With GDP](output/model_comparison_with_gdp.png)
+<p align="center">
+<img src="output/model_comparison_with_gdp.png" width="700"><br>
+<b>Figure 2. model comparison with GDP per capita.</b>
+</p>
 
 From the RMSE comparison, **XGBoost performs the best** with the lowest prediction error.
 
@@ -168,7 +171,10 @@ The results are stored in: 'output/model_comparison_without_gdp.csv'
 
 Visualization:
 
-![Model Comparison Without GDP](output/model_comparison_without_gdp.png)
+<p align="center">
+<img src="output/model_comparison_without_gdp.png" width="700"><br>
+<b>Figure 3. model comparison without GDP per capita.</b>
+</p>
 
 After removing GDP per capita, model performance declines across all models. RMSE increases and R² decreases, indicating that GDP per capita is an important predictor of paper consumption.
 
@@ -179,14 +185,20 @@ Feature importance is calculated using the **XGBoost model**, which achieved the
 
 ### Feature importance (with GDP per capita)
 
-![Feature Importance With GDP](output/feature_importance_xgboost_with_gdp.png)
+<p align="center">
+<img src="output/feature_importance_xgboost_with_gdp.png" width="700"><br>
+<b>Figure 4. Feature importance with GDP per capita.</b>
+</p>
 
 The results show that **log GDP per capita is the most important feature**, contributing more than 60% of the importance in the model.
 
 
 ### Feature importance (without GDP per capita)
 
-![Feature Importance Without GDP](output/feature_importance_xgboost_without_gdp.png)
+<p align="center">
+<img src="output/feature_importance_xgboost_without_gdp.png" width="700"><br>
+<b>Figure 5. Feature importance without GDP per capita.</b>
+</p>
 
 When GDP per capita is removed, other variables such as **internet users, year, and manufacturing share** become more important. However, these variables together still cannot fully replace the predictive power of GDP per capita.
 
