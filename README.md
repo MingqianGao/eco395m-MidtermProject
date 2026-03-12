@@ -178,7 +178,7 @@ The results are stored in: 'output/model_comparison_without_gdp.csv'
 | Decision Tree | 16.68 | 0.582 |
 | Polynomial Regression | 17.99 | 0.514 |
 | Linear Regression | 20.81 | 0.349 |
-
+</div>
 
 Visualization:
 
