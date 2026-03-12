@@ -13,6 +13,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
+from sklearn.model_selection import GridSearchCV
 
 
 # ------------------------------#
@@ -25,6 +26,9 @@ INT = ROOT / "intermediate"
 DATA = ROOT / "data_cleaning"
 OUT = ROOT / "output"
 
+OUT.mkdir(exist_ok=True)
+(OUT / "tables").mkdir(exist_ok=True)
+(OUT / "figures").mkdir(exist_ok=True)
 
 # ----------------------------------------------------------#
 # Model Evaluation
@@ -34,7 +38,9 @@ def evaluate_model(model, model_name):
 
     model.fit(X_train, y_train)
 
-    y_pred_log = model.predict(X_test)
+    best_model = model.best_estimator_ if hasattr(model, "best_estimator_") else model
+
+    y_pred_log = best_model.predict(X_test)
 
     y_test_exp = np.exp(y_test)
     y_pred_exp = np.exp(y_pred_log)
@@ -42,14 +48,13 @@ def evaluate_model(model, model_name):
     rmse = np.sqrt(mean_squared_error(y_test_exp, y_pred_exp))
     r2 = r2_score(y_test_exp, y_pred_exp)
 
-
     result = {
         "Model": model_name,
         "RMSE": rmse,
         "R2": r2
     }
 
-    return result, model
+    return result, best_model
 
 
 # ----------------------------------------------------------#
@@ -63,20 +68,31 @@ def run_linear_regression():
     return evaluate_model(model, "Linear Regression")
 
 
-
 # ----------------------------------------------------------#
 # Polynomial Regression
 # ----------------------------------------------------------#
 
 def run_polynomial_regression():
 
-    model = make_pipeline(
-        PolynomialFeatures(degree=2, include_bias=False),
-        StandardScaler(),
-        LinearRegression()
+    poly_pipe = make_pipeline(
+    PolynomialFeatures(include_bias=False),
+    StandardScaler(),
+    LinearRegression()
     )
-
-    return evaluate_model(model, "Polynomial Regression")
+    
+    param_grid = {
+        "polynomialfeatures__degree": [1, 2, 3]
+    }
+    
+    grid_poly = GridSearchCV(
+        poly_pipe,
+        param_grid,
+        cv=5,
+        scoring="neg_root_mean_squared_error",
+        n_jobs=-1
+    )
+    
+    return evaluate_model(grid_poly, "Polynomial Regression")
 
 
 # ----------------------------------------------------------#
@@ -85,12 +101,25 @@ def run_polynomial_regression():
 
 def run_knn():
 
-    model = make_pipeline(
-        StandardScaler(),
-        KNeighborsRegressor(n_neighbors=10)
+    knn_pipe = make_pipeline(
+    StandardScaler(),
+    KNeighborsRegressor()
+    )
+    
+    param_grid = {
+        "kneighborsregressor__n_neighbors": [3,5,7,9,11],
+        "kneighborsregressor__weights": ["uniform","distance"]
+    }
+    
+    grid_knn = GridSearchCV(
+        knn_pipe,
+        param_grid,
+        cv=5,
+        scoring="neg_root_mean_squared_error",
+        n_jobs=-1
     )
 
-    return evaluate_model(model, "KNN")
+    return evaluate_model(grid_knn, "KNN")
 
 
 # ----------------------------------------------------------#
@@ -99,12 +128,23 @@ def run_knn():
 
 def run_decision_tree():
 
-    model = DecisionTreeRegressor(
-        max_depth=5,
-        random_state=42
+    tree = DecisionTreeRegressor(random_state=42)
+
+    param_grid = {
+        "max_depth": [3,5,8,10,12,None],
+        "min_samples_split": [2,5,10],
+        "min_samples_leaf": [1,2,4]
+    }
+    
+    grid_tree = GridSearchCV(
+        tree,
+        param_grid,
+        cv=5,
+        scoring="neg_root_mean_squared_error",
+        n_jobs=-1
     )
 
-    return evaluate_model(model, "Decision Tree")
+    return evaluate_model(grid_tree, "Decision Tree")
 
 
 # ----------------------------------------------------------#
@@ -113,13 +153,24 @@ def run_decision_tree():
 
 def run_random_forest():
 
-    model = RandomForestRegressor(
-        n_estimators=200,
-        max_depth=8,
-        random_state=42
+    rf = RandomForestRegressor(random_state=42)
+
+    param_grid = {
+        "n_estimators": [300,400,500],
+        "max_depth": [5,8,12,None],
+        "min_samples_split": [2,5],
+        "min_samples_leaf": [1,2,4]
+    }
+    
+    grid_rf = GridSearchCV(
+        rf,
+        param_grid,
+        cv=5,
+        scoring="neg_root_mean_squared_error",
+        n_jobs=-1
     )
 
-    return evaluate_model(model, "Random Forest")
+    return evaluate_model(grid_rf, "Random Forest")
 
 
 # ----------------------------------------------------------#
@@ -128,29 +179,40 @@ def run_random_forest():
 
 def run_xgboost():
 
-    model = XGBRegressor(
-        n_estimators=200,
-        max_depth=4,
-        learning_rate=0.05,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        random_state=42,
-        objective="reg:squarederror"
+    xgb = XGBRegressor(
+    random_state=42,
+    objective="reg:squarederror"
+    )
+    
+    param_grid = {
+        "n_estimators": [200,300,400],
+        "max_depth": [4,6,8],
+        "learning_rate": [0.05,0.1,0.2],
+        "subsample": [0.8,1.0],
+        "colsample_bytree": [0.8,1.0]
+    }
+    
+    grid_xgb = GridSearchCV(
+        xgb,
+        param_grid,
+        cv=5,
+        scoring="neg_root_mean_squared_error",
+        n_jobs=-1
     )
 
-    return evaluate_model(model, "XGBoost")
+    return evaluate_model(grid_xgb, "XGBoost")
 
 # ---------------------------------------
 # Model Comparison
 # ---------------------------------------
 
-def model_comparison(results):
+def model_comparison(results, suffix=""):
 
     result_df = pd.DataFrame(results)
 
     result_df = result_df.sort_values("RMSE").reset_index(drop=True)
 
-    result_df.to_csv(OUT/"model_comparison.csv", index=False)
+    result_df.to_csv(OUT/f"model_comparison{suffix}.csv", index=False)
 
     plt.figure(figsize=(8,5))
     plt.bar(result_df["Model"], result_df["RMSE"])
@@ -160,7 +222,7 @@ def model_comparison(results):
     plt.xticks(rotation=45)
     plt.tight_layout()
 
-    plt.savefig(OUT/"model_comparison.png")
+    plt.savefig(OUT/f"model_comparison{suffix}.png")
     plt.close()
 
     print("\nModel Comparison:")
@@ -171,7 +233,7 @@ def model_comparison(results):
 # ---------------------------------------
 # Feature Importance
 # ---------------------------------------
-def feature_importance(best_model_name, best_model, feature_cols):
+def feature_importance(best_model_name, best_model, feature_cols, suffix=""):
 
     if not hasattr(best_model, "feature_importances_"):
         print(best_model_name, "does not support feature importance.")
@@ -189,7 +251,7 @@ def feature_importance(best_model_name, best_model, feature_cols):
     file_name = best_model_name.lower().replace(" ", "_")
 
     fi_df.to_csv(
-        f"output/tables/feature_importance_{file_name}.csv",
+        OUT / "tables" / f"feature_importance_{file_name}{suffix}.csv",
         index=False
     )
 
@@ -202,7 +264,7 @@ def feature_importance(best_model_name, best_model, feature_cols):
     plt.tight_layout()
 
     plt.savefig(
-        f"output/figures/feature_importance_{file_name}.png"
+        OUT / "figures" / f"feature_importance_{file_name}{suffix}.png"
     )
 
     plt.close()
@@ -228,7 +290,7 @@ df["log_GDPperCapita"] = np.log(df["GDPperCapita"])
 df["log_urbanpop"] = np.log(df["urbanpop"])
 
 
-vars = [
+summary_vars = [
     "paper_writing",
     "paper_all",
     "GDPperCapita",
@@ -241,7 +303,7 @@ vars = [
     "paper_per_capita",
 ]
 
-summary = df[vars].describe().T
+summary = df[summary_vars].describe().T
 
 summary.to_csv(OUT / "summary_statistics.csv")
 
@@ -250,7 +312,7 @@ summary.to_csv(OUT / "summary_statistics.csv")
 # ----------------------------------------------------------#
 
 
-corr = df[vars].corr()
+corr = df[summary_vars].corr()
 
 plt.figure(figsize=(8,6))
 sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f")
@@ -313,7 +375,7 @@ trained_models["XGBoost"] = model
 feature_cols = X_cols
 
 # Model comparison
-result_df = model_comparison(results)
+result_df = model_comparison(results, "_with_gdp")
 
 # choose best model
 best_model_name = result_df.iloc[0]["Model"]
@@ -321,4 +383,61 @@ best_model_name = result_df.iloc[0]["Model"]
 best_model = trained_models[best_model_name]
 
 # feature importance
-feature_importance(best_model_name, best_model, feature_cols)
+feature_importance(best_model_name, best_model, feature_cols, "_with_gdp")
+
+# Remove GDPperCapita from X and run again
+X_cols = [
+    "internetUsers",
+    "Manushare",
+    "year",
+    "log_urbanpop",
+    "trade",
+    "GDPgrowth",
+]
+
+X = df[X_cols]
+y = df["log_paper_pc"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+results = []
+trained_models = {}
+
+res, model = run_linear_regression()
+results.append(res)
+trained_models["Linear Regression"] = model
+
+res, model = run_polynomial_regression()
+results.append(res)
+trained_models["Polynomial Regression"] = model
+
+res, model = run_knn()
+results.append(res)
+trained_models["KNN"] = model
+
+res, model = run_decision_tree()
+results.append(res)
+trained_models["Decision Tree"] = model
+
+res, model = run_random_forest()
+results.append(res)
+trained_models["Random Forest"] = model
+
+res, model = run_xgboost()
+results.append(res)
+trained_models["XGBoost"] = model
+
+feature_cols = X_cols
+
+# Model comparison
+result_df = model_comparison(results, "_without_gdp")
+
+# choose best model
+best_model_name = result_df.iloc[0]["Model"]
+
+best_model = trained_models[best_model_name]
+
+# feature importance
+feature_importance(best_model_name, best_model, feature_cols, "_without_gdp")
