@@ -135,6 +135,10 @@ This allows us to evaluate how important GDP per capita is in predicting paper c
 
 The model comparison results with GDP per capita included are saved in: output/model_comparison_with_gdp.csv
 
+---
+
+<p align="center"><strong>Table 3. Model comparison with gdp</strong></p>
+
 | Model | RMSE | R² |
 |------|------|------|
 | XGBoost | 10.26 | 0.842 |
@@ -159,6 +163,10 @@ From the RMSE comparison, **XGBoost performs the best** with the lowest predicti
 To test whether other variables alone can predict paper consumption, we also trained models **without GDP per capita**.
 
 The results are stored in: 'output/model_comparison_without_gdp.csv'
+
+---
+
+<p align="center"><strong>Table 4. Model comparison without gdp</strong></p>
 
 | Model | RMSE | R² |
 |------|------|------|
