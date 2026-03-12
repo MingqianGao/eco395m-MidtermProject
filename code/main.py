@@ -78,10 +78,10 @@ def run_polynomial_regression(X_train, X_test, y_train, y_test):
     """
     
     poly_pipe = make_pipeline(
-    PolynomialFeatures(include_bias=False),
-    StandardScaler(),
-    LinearRegression()
-    )
+        PolynomialFeatures(include_bias=False),
+        StandardScaler(),
+        LinearRegression()
+        )
     
     param_grid = {
         "polynomialfeatures__degree": [1, 2, 3]
@@ -108,9 +108,9 @@ def run_knn(X_train, X_test, y_train, y_test):
     """
     
     knn_pipe = make_pipeline(
-    StandardScaler(),
-    KNeighborsRegressor()
-    )
+        StandardScaler(),
+        KNeighborsRegressor()
+        )
     
     param_grid = {
         "kneighborsregressor__n_neighbors": [3,5,7,9,11],
@@ -195,9 +195,9 @@ def run_xgboost(X_train, X_test, y_train, y_test):
     """
     
     xgb = XGBRegressor(
-    random_state=42,
-    objective="reg:squarederror"
-    )
+        random_state=42,
+        objective="reg:squarederror"
+        )
     
     param_grid = {
         "n_estimators": [200,300,400],
@@ -462,3 +462,4 @@ best_model = trained_models[best_model_name]
 
 # feature importance
 feature_importance(best_model_name, best_model, feature_cols, "_without_gdp")
+
