@@ -8,7 +8,6 @@ CODE = Path(__file__).resolve().parent
 ROOT = CODE.parent
 RAW = ROOT / "raw"
 INT = ROOT / "intermediate"
-OUT = ROOT / "output"
 
 # ------------------------------#
 # 1. clean data
@@ -194,18 +193,6 @@ df.to_csv(INT / "population.csv", index=False)
 # clean paper consumption
 # ------------------------------#
 
-df = pd.read_csv(RAW / "paper_writing.csv")
-
-df = (
-    df.pivot_table(
-        index=["Area", "Year"],
-        columns="Element",
-        values="Value",
-        aggfunc="sum"
-    )
-    .reset_index()
-)
-
 name_map = {
     "Bahamas": "Bahamas, The",
     "Bolivia (Plurinational State of)": "Bolivia",
@@ -236,6 +223,18 @@ name_map = {
     "Venezuela (Bolivarian Republic of)": "Venezuela, RB",
     "Yemen": "Yemen, Rep."
 }
+
+df = pd.read_csv(RAW / "paper_writing.csv")
+
+df = (
+    df.pivot_table(
+        index=["Area", "Year"],
+        columns="Element",
+        values="Value",
+        aggfunc="sum"
+    )
+    .reset_index()
+)
 
 df["countryname"] = df["Area"].replace(name_map)
 
@@ -267,37 +266,6 @@ df = (
     .reset_index()
 )
 
-name_map = {
-    "Bahamas": "Bahamas, The",
-    "Bolivia (Plurinational State of)": "Bolivia",
-    "China, Hong Kong SAR": "Hong Kong SAR, China",
-    "Curaçao": "Curacao",
-    "Côte d'Ivoire": "Cote d'Ivoire",
-    "Democratic Republic of the Congo": "Congo, Dem. Rep.",
-    "Congo": "Congo, Rep.",
-    "Egypt": "Egypt, Arab Rep.",
-    "Gambia": "Gambia, The",
-    "Iran (Islamic Republic of)": "Iran, Islamic Rep.",
-    "Kyrgyzstan": "Kyrgyz Republic",
-    "Lao People's Democratic Republic": "Lao PDR",
-    "Micronesia (Federated States of)": "Micronesia, Fed. Sts.",
-    "Netherlands (Kingdom of the)": "Netherlands",
-    "Republic of Korea": "Korea, Rep.",
-    "Republic of Moldova": "Moldova",
-    "Saint Kitts and Nevis": "St. Kitts and Nevis",
-    "Saint Lucia": "St. Lucia",
-    "Saint Martin (French part)": "St. Martin (French part)",
-    "Saint Vincent and the Grenadines": "St. Vincent and the Grenadines",
-    "Slovakia": "Slovak Republic",
-    "Somalia": "Somalia, Fed. Rep.",
-    "Türkiye": "Turkiye",
-    "United Kingdom of Great Britain and Northern Ireland": "United Kingdom",
-    "United Republic of Tanzania": "Tanzania",
-    "United States of America": "United States",
-    "Venezuela (Bolivarian Republic of)": "Venezuela, RB",
-    "Yemen": "Yemen, Rep."
-}
-
 df["countryname"] = df["Area"].replace(name_map)
 
 
@@ -316,28 +284,6 @@ df = df[["countryname", "year", "paper_all"]]
 
 df.to_csv(INT / "paper_all.csv", index=False)
 
-# ------------------------------#
-# clean population
-# ------------------------------#
-df = pd.read_csv(RAW / "population.csv", header=2)
-df = df.drop(columns=["Unnamed: 70"], errors="ignore")
-df = df.drop(columns=["Indicator Name", "Indicator Code"], errors="ignore")
-df = df.rename(columns={
-    "Country Name": "countryname",
-    "Country Code": "countrycode"
-})
-
-year_cols = [col for col in df.columns if str(col).isdigit() and len(str(col)) == 4]
-df = df.rename(columns={col: f"y{col}" for col in year_cols})
-
-df = df.melt(
-    id_vars=["countryname", "countrycode"],
-    var_name="year",
-    value_name="population"
-)
-df["year"] = df["year"].str.replace("y", "", regex=False).astype(int)
-
-df.to_csv(INT / "population.csv", index=False)
 
 # ------------------------------#
 # 2. Merge
@@ -405,6 +351,4 @@ final_panel = final_panel.drop(columns=["countrycode", "countrycode_x", "country
 
 final_panel = final_panel.dropna(subset=["GDPperCapita", "paper_writing", "internetUsers"])
 
-final_panel.to_csv("final_panel.csv", index=False)
-
-
+final_panel.to_csv(ROOT / "data_cleaning" / "final_panel.csv", index=False)
