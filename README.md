@@ -140,7 +140,7 @@ The model comparison results with GDP per capita included are saved in: output/m
 <p align="center"><strong>Table 3. Model comparison with gdp</strong></p>
 
 | Model | RMSE | R² |
-|------|------|------|
+|---|---|---|
 | XGBoost | 10.26 | 0.842 |
 | Random Forest | 11.56 | 0.799 |
 | Decision Tree | 11.79 | 0.791 |
@@ -169,7 +169,7 @@ The results are stored in: 'output/model_comparison_without_gdp.csv'
 <p align="center"><strong>Table 4. Model comparison without gdp</strong></p>
 
 | Model | RMSE | R² |
-|------|------|------|
+|---|---|---|
 | XGBoost | 12.02 | 0.783 |
 | KNN | 13.37 | 0.731 |
 | Random Forest | 14.22 | 0.696 |
