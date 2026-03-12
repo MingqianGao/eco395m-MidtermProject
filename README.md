@@ -58,7 +58,7 @@ Variables such as GDP per capita, internet penetration, and trade openness displ
 
 ---
 
-<p align="center"><strong>Table Table 2: Summary Statistic</strong></p>
+<p align="center"><strong> Table 2: Summary Statistics</strong></p>
 
 | Variable | Count | Mean | Std. Dev. | Min | 25% | Median | 75% | Max |
 |---|---|---|---|---|---|---|---|---|
