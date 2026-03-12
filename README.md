@@ -89,3 +89,22 @@ Interestingly, trade openness shows a weak negative correlation with paper consu
 <img src="output/correlation_heatmap.png" width="700"><br>
 <b>Figure 1. Correlation matrix of key variables.</b>
 </p>
+
+## 3. Models
+
+### 3.1 Modeling Approaches
+
+To examine the relationship between economic indicators and paper consumption, we implemented several predictive models and compared their performance. The dependent variable in the analysis is the **logarithm of paper consumption per capita**, which was constructed by dividing writing paper consumption by population and applying a log transformation. The log transformation helps reduce skewness in the distribution and improves model stability.
+
+We first implemented **Linear Regression** as a baseline model. This model assumes a linear relationship between the explanatory variables and paper consumption per capita, providing a benchmark against which more flexible machine learning models can be compared.
+
+To capture potential nonlinear effects, we also implemented **Polynomial Regression** with second-degree polynomial features. This specification allows the model to capture both **nonlinear relationships** (through squared terms) and **interaction effects between explanatory variables**. As a result, the model can represent curved relationships and potential interactions among economic indicators while maintaining relatively simple interpretability.
+
+In addition, we applied several machine learning models capable of capturing complex nonlinear patterns in the data. A **K-Nearest Neighbors (KNN)** regression model predicts outcomes based on the average behavior of nearby observations in the feature space. A **Decision Tree Regressor** was also implemented, which models nonlinear relationships by recursively splitting the data based on feature values.
+
+To further improve predictive performance, we used two ensemble learning methods. **Random Forest** aggregates predictions from many decision trees trained on different bootstrap samples of the data, reducing variance and improving model stability. **XGBoost**, a gradient boosting algorithm, sequentially builds trees that focus on correcting prediction errors from previous trees, enabling the model to capture complex interactions among features.
+
+For each model, hyperparameters were selected using **GridSearchCV with cross-validation**, where the goal was to minimize the **Root Mean Squared Error (RMSE)**. The tuned models were then evaluated on the test dataset to compare their predictive performance.
+
+---
+
