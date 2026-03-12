@@ -137,7 +137,9 @@ The model comparison results with GDP per capita included are saved in: output/m
 
 ---
 
-<p align="center"><strong>Table 3. Model comparison with gdp</strong></p>
+<div align="center">
+
+<strong>Table 3. Model comparison with GDP</strong>
 
 | Model | RMSE | R² |
 |:----:|:----:|:----:|
@@ -148,6 +150,7 @@ The model comparison results with GDP per capita included are saved in: output/m
 | Polynomial Regression | 14.79 | 0.671 |
 | Linear Regression | 17.24 | 0.553 |
 
+</div>
 The visualization of model performance is shown below:
 
 <p align="center">
@@ -164,7 +167,8 @@ To test whether other variables alone can predict paper consumption, we also tra
 
 The results are stored in: 'output/model_comparison_without_gdp.csv'
 
-<p align="center"><strong>Table 4. Model comparison without gdp</strong></p>
+<div align="center">
+ <strong>Table 4. Model comparison without gdp</strong>
 
 | Model | RMSE | R² |
 |:----:|:----:|:----:|
@@ -174,6 +178,7 @@ The results are stored in: 'output/model_comparison_without_gdp.csv'
 | Decision Tree | 16.68 | 0.582 |
 | Polynomial Regression | 17.99 | 0.514 |
 | Linear Regression | 20.81 | 0.349 |
+
 
 Visualization:
 
