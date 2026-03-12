@@ -108,3 +108,14 @@ For each model, hyperparameters were selected using **GridSearchCV with cross-va
 
 ---
 
+### 3.2 Model Limitations
+
+Despite using multiple modeling approaches, several limitations remain in this analysis.
+
+First, although the dataset contains several thousand observations, the **number of features included in the models is relatively limited**. Paper consumption is likely influenced by additional factors not included in the dataset, such as environmental regulations, digitalization trends, technological adoption, industrial structure changes, and shifts in consumer behavior. The absence of these variables may reduce the predictive power of the models and limit their ability to fully capture the determinants of paper consumption.
+
+Second, the analysis relies on **aggregated country-level macroeconomic data**, which may mask substantial heterogeneity within countries. Differences across regions, industries, or demographic groups are not captured in the dataset, potentially limiting the precision of the predictions.
+
+Third, the models used in this project focus on **prediction rather than causal inference**. While machine learning models can identify statistical relationships between the input features and paper consumption, they do not establish causal effects. Therefore, the results should be interpreted as predictive associations rather than evidence of causal relationships.
+
+Finally, the models rely on historical data and implicitly assume that the relationships between predictors and paper consumption remain relatively stable over time. However, structural changes such as technological innovation, policy changes, or shifts in global trade patterns may alter these relationships, potentially reducing the reliability of the models for long-term forecasting.
