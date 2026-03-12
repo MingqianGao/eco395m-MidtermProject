@@ -14,14 +14,12 @@ In this project, we examine whether economic and digital development indicators 
 ### 2.1 Data Sources
 
 This study combines multiple international datasets to construct a country–year panel dataset.  
+
 Economic indicators, including GDP per capita, GDP growth, manufacturing share, trade openness, internet usage, urban population, and total population, are obtained from the World Bank's World Development Indicators (WDI).  
 
 Data on paper production, imports, and exports are obtained from FAOSTAT. These data are used to construct measures of paper consumption. Writing and printing paper consumption is calculated as production plus imports minus exports. Total paper consumption is constructed using the same accounting identity.
 
-The final dataset covers 114 countries over the period from 1990 to 2024. 
-Because data availability varies across countries and indicators, the panel is not perfectly balanced. 
-However, the majority of countries maintain relatively complete time coverage. 
-Only 18 countries have fewer than 15 years of observations, while most countries contribute substantially longer time series.
+The final dataset covers 114 countries over the period from 1990 to 2024. Because data availability varies across countries and indicators, the panel is not perfectly balanced.  However, the majority of countries maintain relatively complete time coverage. Only 18 countries have fewer than 15 years of observations, while most countries contribute substantially longer time series.
 
 ---
 
@@ -33,7 +31,7 @@ Key explanatory variables capture economic development, technological adoption, 
 
 Several variables are transformed or standardized to ensure comparability across countries. For example, manufacturing share and trade openness are expressed as proportions, and paper consumption is converted from tons to kilograms when constructing per capita measures.
 
-### Table 1. Variable Definitions
+<p align="center"><strong>Table 1. Variable Definitions</strong></p>
 
 | Variable | Description | Unit |
 |---|---|---|
@@ -60,7 +58,7 @@ Variables such as GDP per capita, internet penetration, and trade openness displ
 
 ---
 
-### Table 2: Summary Statistics
+<p align="center"><strong>Table Table 2: Summary Statistic</strong></p>
 
 | Variable | Count | Mean | Std. Dev. | Min | 25% | Median | 75% | Max |
 |---|---|---|---|---|---|---|---|---|
