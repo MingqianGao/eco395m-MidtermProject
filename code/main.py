@@ -4,6 +4,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.pipeline import make_pipeline
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from xgboost import XGBRegressor
+
 
 # ------------------------------#
 # 0. Paths
@@ -113,8 +123,6 @@ def evaluate_model(model, model_name):
 # Linear Regression
 # ----------------------------------------------------------#
 
-from sklearn.linear_model import LinearRegression
-
 def run_linear_regression():
 
     model = LinearRegression()
@@ -126,8 +134,6 @@ def run_linear_regression():
 # ----------------------------------------------------------#
 # Polynomial Regression
 # ----------------------------------------------------------#
-
-from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
 def run_polynomial_regression():
 
@@ -144,27 +150,62 @@ def run_polynomial_regression():
 # KNN
 # ----------------------------------------------------------#
 
+def run_knn():
 
+    model = make_pipeline(
+        StandardScaler(),
+        KNeighborsRegressor(n_neighbors=10)
+    )
+
+    return evaluate_model(model, "KNN")
 
 
 # ----------------------------------------------------------#
 # Decision Tree
 # ----------------------------------------------------------#
 
+def run_decision_tree():
 
+    model = DecisionTreeRegressor(
+        max_depth=5,
+        random_state=42
+    )
+
+    return evaluate_model(model, "Decision Tree")
 
 
 # ----------------------------------------------------------#
 # Random Forest
 # ----------------------------------------------------------#
 
+def run_random_forest():
 
+    model = RandomForestRegressor(
+        n_estimators=200,
+        max_depth=8,
+        random_state=42
+    )
+
+    return evaluate_model(model, "Random Forest")
 
 
 # ----------------------------------------------------------#
 # XGBoost
 # ----------------------------------------------------------#
 
+def run_xgboost():
+
+    model = XGBRegressor(
+        n_estimators=200,
+        max_depth=4,
+        learning_rate=0.05,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        random_state=42,
+        objective="reg:squarederror"
+    )
+
+    return evaluate_model(model, "XGBoost")
 
 
 
