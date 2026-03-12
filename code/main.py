@@ -120,7 +120,17 @@ def evaluate_model(model, model_name):
 # Polynomial Regression
 # ----------------------------------------------------------#
 
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 
+def run_polynomial_regression():
+
+    model = make_pipeline(
+        PolynomialFeatures(degree=2, include_bias=False),
+        StandardScaler(),
+        LinearRegression()
+    )
+
+    return evaluate_model(model, "Polynomial Regression")
 
 
 # ----------------------------------------------------------#
