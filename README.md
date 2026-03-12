@@ -181,3 +181,108 @@ seaborn
 scikit-learn
 xgboost
 ```
+
+### 3.3 Model Comparison and Recommendation
+
+To evaluate which model performs best in predicting paper consumption across countries, we compared several machine learning models including Linear Regression, Polynomial Regression, KNN, Decision Tree, Random Forest, and XGBoost. 
+
+Model performance is evaluated using **RMSE (Root Mean Squared Error)** and **R²** on the test dataset. Lower RMSE indicates better predictive performance.
+
+We conducted two sets of experiments:
+
+1. Models **including GDP per capita**
+2. Models **excluding GDP per capita**
+
+This allows us to evaluate how important GDP per capita is in predicting paper consumption.
+
+## 3.3.1 Model Comparison (With GDP per capita)
+
+The model comparison results with GDP per capita included are saved in: output/model_comparison_with_gdp.csv
+
+| Model | RMSE | R² |
+|------|------|------|
+| XGBoost | 10.26 | 0.842 |
+| Random Forest | 11.56 | 0.799 |
+| Decision Tree | 11.79 | 0.791 |
+| KNN | 11.92 | 0.786 |
+| Polynomial Regression | 14.79 | 0.671 |
+| Linear Regression | 17.24 | 0.553 |
+
+The visualization of model performance is shown below:
+
+![Model Comparison With GDP](output/model_comparison_with_gdp.png)
+
+From the RMSE comparison, **XGBoost performs the best** with the lowest prediction error.
+
+
+## 3.3.2 Model Comparison (Without GDP per capita)
+
+To test whether other variables alone can predict paper consumption, we also trained models **without GDP per capita**.
+
+The results are stored in: 'output/model_comparison_without_gdp.csv'
+
+| Model | RMSE | R² |
+|------|------|------|
+| XGBoost | 12.02 | 0.783 |
+| KNN | 13.37 | 0.731 |
+| Random Forest | 14.22 | 0.696 |
+| Decision Tree | 16.68 | 0.582 |
+| Polynomial Regression | 17.99 | 0.514 |
+| Linear Regression | 20.81 | 0.349 |
+
+Visualization:
+
+![Model Comparison Without GDP](output/model_comparison_without_gdp.png)
+
+After removing GDP per capita, model performance declines across all models. RMSE increases and R² decreases, indicating that GDP per capita is an important predictor of paper consumption.
+
+
+## 3.3.3 Feature Importance Analysis
+
+Feature importance is calculated using the **XGBoost model**, which achieved the best performance.
+
+### Feature importance (with GDP per capita)
+
+![Feature Importance With GDP](output/feature_importance_xgboost_with_gdp.png)
+
+The results show that **log GDP per capita is the most important feature**, contributing more than 60% of the importance in the model.
+
+
+### Feature importance (without GDP per capita)
+
+![Feature Importance Without GDP](output/feature_importance_xgboost_without_gdp.png)
+
+When GDP per capita is removed, other variables such as **internet users, year, and manufacturing share** become more important. However, these variables together still cannot fully replace the predictive power of GDP per capita.
+
+
+## 3.3.4 Recommendation
+
+Based on the model comparison results, **XGBoost is the recommended model for predicting paper consumption across countries.**
+
+There are two main reasons:
+
+1. XGBoost consistently achieves the lowest RMSE and highest R² among all tested models.
+
+2. Compared with linear models, XGBoost can capture more complex relationships between economic indicators and paper consumption.
+
+In addition, the feature importance analysis suggests that GDP per capita is the most influential factor affecting paper consumption. Countries with higher levels of economic development tend to consume more paper products.
+
+Therefore, our final recommendation is to **use XGBoost with GDP per capita included as the main model for predicting paper consumption across countries.**
+
+## 4. Interpretation
+
+One interesting result appears when we compare the feature importance before and after removing GDP per capita.
+
+When GDP per capita is included in the model, it dominates the feature importance ranking. The variable **log_GDPperCapita** accounts for the majority of the predictive power in the XGBoost model. In this case, other variables such as internet usage, urban population, and manufacturing share play relatively smaller roles.
+
+However, when GDP per capita is removed from the model, the importance ranking changes significantly. In this case, **internetUsers becomes the most important predictor** of paper consumption. Other variables such as year and manufacturing share also gain relatively higher importance.
+
+This shift is meaningful because **internetUsers can be interpreted as a proxy for digital development and technological adoption**.
+
+In other words, once the model can no longer rely on GDP per capita to capture overall economic development, it begins to rely more heavily on variables that reflect the **digital environment of a country**.
+
+This result connects directly to the motivation of our project. At the beginning of this project, we were interested in understanding how **technological progress and digitalization might influence paper consumption**. One common argument is that as digital technology becomes more widespread, the demand for paper may change due to digital communication, online documents, and electronic information sharing.
+
+Our results partially support this narrative. When GDP per capita is removed, digital development (represented by internet usage) becomes the strongest predictor of paper consumption. This suggests that **technology adoption and digital infrastructure may play an important role in shaping how countries consume paper products**.
+
+Therefore, the comparison between the two models not only helps us evaluate predictive performance, but also helps us better understand the relationship between **economic development, digitalization, and paper consumption across countries**.
