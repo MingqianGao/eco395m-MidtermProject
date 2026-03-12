@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LinearRegression
@@ -13,7 +13,6 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 from xgboost import XGBRegressor
-from sklearn.model_selection import GridSearchCV
 
 
 # ------------------------------#
@@ -21,8 +20,6 @@ from sklearn.model_selection import GridSearchCV
 # ------------------------------#
 CODE = Path(__file__).resolve().parent
 ROOT = CODE.parent
-RAW = ROOT / "raw"
-INT = ROOT / "intermediate"
 DATA = ROOT / "data_cleaning"
 OUT = ROOT / "output"
 
@@ -32,8 +29,11 @@ OUT.mkdir(exist_ok=True)
 # Model Evaluation
 # ----------------------------------------------------------#
 
-def evaluate_model(model, model_name):
-
+def evaluate_model(model, model_name, X_train, X_test, y_train, y_test):
+    """
+    Fit a model, evaluate it on the test set, and return metrics.
+    """
+    
     model.fit(X_train, y_train)
 
     best_model = model.best_estimator_ if hasattr(model, "best_estimator_") else model
@@ -59,19 +59,24 @@ def evaluate_model(model, model_name):
 # Linear Regression
 # ----------------------------------------------------------#
 
-def run_linear_regression():
-
+def run_linear_regression(X_train, X_test, y_train, y_test):
+    """
+    Train and evaluate a linear regression model.
+    """
     model = LinearRegression()
 
-    return evaluate_model(model, "Linear Regression")
+    return evaluate_model(model, "Linear Regression", X_train, X_test, y_train, y_test)
 
 
 # ----------------------------------------------------------#
 # Polynomial Regression
 # ----------------------------------------------------------#
-
-def run_polynomial_regression():
-
+    
+def run_polynomial_regression(X_train, X_test, y_train, y_test):
+    """
+    Train and evaluate a polynomial regression model.
+    """
+    
     poly_pipe = make_pipeline(
     PolynomialFeatures(include_bias=False),
     StandardScaler(),
@@ -90,15 +95,18 @@ def run_polynomial_regression():
         n_jobs=-1
     )
     
-    return evaluate_model(grid_poly, "Polynomial Regression")
+    return evaluate_model(grid_poly, "Polynomial Regression", X_train, X_test, y_train, y_test)
 
 
 # ----------------------------------------------------------#
 # KNN
 # ----------------------------------------------------------#
 
-def run_knn():
-
+def run_knn(X_train, X_test, y_train, y_test):
+    """
+    Train and evaluate a KNN model.
+    """
+    
     knn_pipe = make_pipeline(
     StandardScaler(),
     KNeighborsRegressor()
@@ -117,15 +125,18 @@ def run_knn():
         n_jobs=-1
     )
 
-    return evaluate_model(grid_knn, "KNN")
+    return evaluate_model(grid_knn, "KNN", X_train, X_test, y_train, y_test)
 
 
 # ----------------------------------------------------------#
 # Decision Tree
 # ----------------------------------------------------------#
 
-def run_decision_tree():
-
+def run_decision_tree(X_train, X_test, y_train, y_test):
+    """
+    Train and evaluate a decision tree model.
+    """
+    
     tree = DecisionTreeRegressor(random_state=42)
 
     param_grid = {
@@ -142,15 +153,18 @@ def run_decision_tree():
         n_jobs=-1
     )
 
-    return evaluate_model(grid_tree, "Decision Tree")
+    return evaluate_model(grid_tree, "Decision Tree", X_train, X_test, y_train, y_test)
 
 
 # ----------------------------------------------------------#
 # Random Forest
 # ----------------------------------------------------------#
 
-def run_random_forest():
-
+def run_random_forest(X_train, X_test, y_train, y_test):
+    """
+    Train and evaluate a random forest model.
+    """
+    
     rf = RandomForestRegressor(random_state=42)
 
     param_grid = {
@@ -168,15 +182,18 @@ def run_random_forest():
         n_jobs=-1
     )
 
-    return evaluate_model(grid_rf, "Random Forest")
+    return evaluate_model(grid_rf, "Random Forest", X_train, X_test, y_train, y_test)
 
 
 # ----------------------------------------------------------#
 # XGBoost
 # ----------------------------------------------------------#
 
-def run_xgboost():
-
+def run_xgboost(X_train, X_test, y_train, y_test):
+    """
+    Train and evaluate an XGBoost model.
+    """
+    
     xgb = XGBRegressor(
     random_state=42,
     objective="reg:squarederror"
@@ -198,19 +215,22 @@ def run_xgboost():
         n_jobs=-1
     )
 
-    return evaluate_model(grid_xgb, "XGBoost")
+    return evaluate_model(grid_xgb, "XGBoost", X_train, X_test, y_train, y_test)
 
 # ---------------------------------------
 # Model Comparison
 # ---------------------------------------
 
 def model_comparison(results, suffix=""):
-
+    """
+    Create a model comparison table and save the comparison plot.
+    """
+    
     result_df = pd.DataFrame(results)
 
     result_df = result_df.sort_values("RMSE").reset_index(drop=True)
 
-    result_df.to_csv(OUT/f"model_comparison{suffix}.csv", index=False)
+    result_df.to_csv(OUT / f"model_comparison{suffix}.csv", index=False)
 
     plt.figure(figsize=(8,5))
     plt.bar(result_df["Model"], result_df["RMSE"])
@@ -220,7 +240,7 @@ def model_comparison(results, suffix=""):
     plt.xticks(rotation=45)
     plt.tight_layout()
 
-    plt.savefig(OUT/f"model_comparison{suffix}.png")
+    plt.savefig(OUT / f"model_comparison{suffix}.png")
     plt.close()
 
     print("\nModel Comparison:")
@@ -232,7 +252,10 @@ def model_comparison(results, suffix=""):
 # Feature Importance
 # ---------------------------------------
 def feature_importance(best_model_name, best_model, feature_cols, suffix=""):
-
+    """
+    Save feature importance values and create a feature importance plot.
+    """
+    
     if not hasattr(best_model, "feature_importances_"):
         print(best_model_name, "does not support feature importance.")
         return
@@ -277,8 +300,8 @@ def feature_importance(best_model_name, best_model, feature_cols, suffix=""):
 
 df = pd.read_csv(DATA / "final_panel.csv")
 
-df = df.drop(columns=['schoolsec', 'schoolter'])
-df = df.dropna(axis=0, how='any')
+df = df.drop(columns=["schoolsec", "schoolter"])
+df = df.dropna(axis=0, how="any")
 df = df[df["paper_writing"] > 0]
 df = df[df["GDPperCapita"] > 0]
 df = df[df["urbanpop"] > 0]
@@ -317,7 +340,7 @@ sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f")
 plt.title("Feature Correlation Matrix")
 
 plt.savefig(OUT / "correlation_heatmap.png", dpi=300)
-plt.show()
+plt.close()
 
 # ----------------------------------------------------------#
 # 2. Models
@@ -346,27 +369,27 @@ X_train, X_test, y_train, y_test = train_test_split(
 results = []
 trained_models = {}
 
-res, model = run_linear_regression()
+res, model = run_linear_regression(X_train, X_test, y_train, y_test)
 results.append(res)
 trained_models["Linear Regression"] = model
 
-res, model = run_polynomial_regression()
+res, model = run_polynomial_regression(X_train, X_test, y_train, y_test)
 results.append(res)
 trained_models["Polynomial Regression"] = model
 
-res, model = run_knn()
+res, model = run_knn(X_train, X_test, y_train, y_test)
 results.append(res)
 trained_models["KNN"] = model
 
-res, model = run_decision_tree()
+res, model = run_decision_tree(X_train, X_test, y_train, y_test)
 results.append(res)
 trained_models["Decision Tree"] = model
 
-res, model = run_random_forest()
+res, model = run_random_forest(X_train, X_test, y_train, y_test)
 results.append(res)
 trained_models["Random Forest"] = model
 
-res, model = run_xgboost()
+res, model = run_xgboost(X_train, X_test, y_train, y_test)
 results.append(res)
 trained_models["XGBoost"] = model
 
@@ -384,7 +407,7 @@ best_model = trained_models[best_model_name]
 feature_importance(best_model_name, best_model, feature_cols, "_with_gdp")
 
 # Remove GDPperCapita from X and run again
-X_cols = [
+X_cols_without_gdp = [
     "internetUsers",
     "Manushare",
     "year",
@@ -393,41 +416,41 @@ X_cols = [
     "GDPgrowth",
 ]
 
-X = df[X_cols]
-y = df["log_paper_pc"]
+X_without_gdp = df[X_cols_without_gdp]
+y_without_gdp = df["log_paper_pc"]
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+X_train_without_gdp, X_test_without_gdp, y_train_without_gdp, y_test_without_gdp = train_test_split(
+    X_without_gdp, y_without_gdp, test_size=0.2, random_state=42
 )
 
 results = []
 trained_models = {}
 
-res, model = run_linear_regression()
+res, model = run_linear_regression(X_train_without_gdp, X_test_without_gdp, y_train_without_gdp, y_test_without_gdp)
 results.append(res)
 trained_models["Linear Regression"] = model
 
-res, model = run_polynomial_regression()
+res, model = run_polynomial_regression(X_train_without_gdp, X_test_without_gdp, y_train_without_gdp, y_test_without_gdp)
 results.append(res)
 trained_models["Polynomial Regression"] = model
 
-res, model = run_knn()
+res, model = run_knn(X_train_without_gdp, X_test_without_gdp, y_train_without_gdp, y_test_without_gdp)
 results.append(res)
 trained_models["KNN"] = model
 
-res, model = run_decision_tree()
+res, model = run_decision_tree(X_train_without_gdp, X_test_without_gdp, y_train_without_gdp, y_test_without_gdp)
 results.append(res)
 trained_models["Decision Tree"] = model
 
-res, model = run_random_forest()
+res, model = run_random_forest(X_train_without_gdp, X_test_without_gdp, y_train_without_gdp, y_test_without_gdp)
 results.append(res)
 trained_models["Random Forest"] = model
 
-res, model = run_xgboost()
+res, model = run_xgboost(X_train_without_gdp, X_test_without_gdp, y_train_without_gdp, y_test_without_gdp)
 results.append(res)
 trained_models["XGBoost"] = model
 
-feature_cols = X_cols
+feature_cols = X_cols_without_gdp
 
 # Model comparison
 result_df = model_comparison(results, "_without_gdp")
@@ -439,4 +462,3 @@ best_model = trained_models[best_model_name]
 
 # feature importance
 feature_importance(best_model_name, best_model, feature_cols, "_without_gdp")
-
