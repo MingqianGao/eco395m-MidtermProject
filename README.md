@@ -1,6 +1,10 @@
 # eco395m-MidtermProject
 Group Member: Mingqian Gao, Yuxin Zhao, and Chieh Su
 
+Mingqian Gao: Data cleaning and merging, descriptive statistics and correlation analysis;
+Yuxin Zhao
+Chieh Su
+
 ## 1. Introduction
 
 Over the past few decades, rapid advances in digital technology have transformed how information is produced, stored, and transmitted. The widespread adoption of the internet, electronic documents, and online communication has led many observers to predict the emergence of a “paperless society.” Under this hypothesis, increasing digitalization may reduce the demand for traditional printing and writing paper.
