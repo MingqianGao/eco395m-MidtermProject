@@ -1,9 +1,11 @@
 # eco395m-MidtermProject
 Group Member: Mingqian Gao, Yuxin Zhao, and Chieh Su
 
-Mingqian Gao: Data cleaning and merging, descriptive statistics and correlation analysis;
-Yuxin Zhao
-Chieh Su
+Mingqian Gao: Data cleaning and merging, descriptive statistics and correlation analysis and Linear regression;
+
+Yuxin Zhao:
+
+Chieh Su:
 
 ## 1. Introduction
 
