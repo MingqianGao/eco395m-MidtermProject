@@ -5,7 +5,7 @@ Mingqian Gao: Data cleaning and merging, descriptive statistics and correlation 
 
 Yuxin Zhao:
 
-Chieh Su:
+Chieh Su: KNN, decision tree, random forest, XGBoost, model limitations, hyperparameter tuning, code formatting
 
 ## 1. Introduction
 
