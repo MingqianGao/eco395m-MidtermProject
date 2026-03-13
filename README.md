@@ -3,7 +3,7 @@ Group Member: Mingqian Gao, Yuxin Zhao, and Chieh Su
 
 Mingqian Gao: Data cleaning and merging, descriptive statistics and correlation analysis and Linear regression;
 
-Yuxin Zhao:
+Yuxin Zhao: Model comparison, feature importance, interpretation;
 
 Chieh Su: KNN, decision tree, random forest, XGBoost, model limitations, hyperparameter tuning, code formatting
 
@@ -195,8 +195,7 @@ Visualization:
 
 After removing GDP per capita, model performance declines across all models. RMSE increases and R² decreases, indicating that GDP per capita is an important predictor of paper consumption.
 
-
-## 3.3.3 Feature Importance Analysis
+## 3.4 Feature Importance Analysis
 
 Feature importance is calculated using the **XGBoost model**, which achieved the best performance.
 
